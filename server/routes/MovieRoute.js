@@ -7,6 +7,7 @@ const authentication = require("../middleware/authentication");
 router.use(authentication);
 
 router.get("/", movieController.getMovies);
+router.get("/recommendations", movieController.getRecommendations);
 router.get("/:id", movieController.getMovieById);
 
 module.exports = router;
