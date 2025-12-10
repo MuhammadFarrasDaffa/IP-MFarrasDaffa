@@ -17,8 +17,7 @@ module.exports = async function authentication(req, res, next) {
         });
 
         if (!user) {
-            next({ name: "Unauthorized", message: "Invalid Token" });
-            return;
+            throw ({ name: "Unauthorized", message: "Invalid Token" });
         }
 
         // Assign value for authorization

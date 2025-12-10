@@ -2,33 +2,42 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Seats', {
+    await queryInterface.createTable('Payments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      StudioId: {
+      UserId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Studios",
+          model: "Users",
           key: "id"
         },
         onDelete: "cascade",
         onUpdate: "cascade"
       },
-      seatRow: {
+      MovieId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Movies",
+          key: "id"
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade"
+      },
+      paymentStatus: {
         type: Sequelize.STRING
       },
-      seatNumber: {
-        type: Sequelize.INTEGER
-      },
-      seatCode: {
+      paymentMethod: {
         type: Sequelize.STRING
       },
-      isAvailable: {
-        type: Sequelize.BOOLEAN
+      paymentDate: {
+        type: Sequelize.DATE
+      },
+      paymentTime: {
+        type: Sequelize.TIME
       },
       createdAt: {
         allowNull: false,
@@ -41,6 +50,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Seats');
+    await queryInterface.dropTable('Payments');
   }
 };

@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Bookings', {
+    await queryInterface.createTable('Watchlists', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,22 +18,31 @@ module.exports = {
         onDelete: "cascade",
         onUpdate: "cascade"
       },
-      ScheduleId: {
+      MovieId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Schedules",
+          model: "Movies",
           key: "id"
         },
         onDelete: "cascade",
         onUpdate: "cascade"
       },
-      bookingDate: {
-        type: Sequelize.DATE
+      title: {
+        type: Sequelize.STRING
       },
-      totalSeat: {
-        type: Sequelize.INTEGER
+      imageUrl: {
+        type: Sequelize.STRING
       },
-      totalPrice: {
+      rating: {
+        type: Sequelize.DECIMAL(2, 1)
+      },
+      status: {
+        type: Sequelize.STRING
+      },
+      genres: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
+      duration: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -47,6 +56,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Bookings');
+    await queryInterface.dropTable('Watchlists');
   }
 };

@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Profile } = require("../models");
 const { signToken } = require("../helpers/jwt");
 const { compareHash } = require("../helpers/bcrypt");
 
@@ -20,6 +20,9 @@ module.exports = class Controller {
             }
 
             const user = await User.findOne({ where: { email } });
+
+            console.log(user);
+
 
             // cari email ke db
             if (!user) {
@@ -44,7 +47,11 @@ module.exports = class Controller {
 
     static async register(req, res, next) {
         try {
-            await User.create(req.body);
+            const newUser = await User.create(req.body);
+
+            await Profile.create({
+                UserId: newUser.id
+            })
 
             res.status(201).json({ message: "Register Successfull" });
         } catch (error) {

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:prepare": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
-    "dev": "npx nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:prepare": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "dev": "npx nodemon bin/www",
+    "test": "jest --detectOpenHandles --forceExit"
   },
   "keywords": [],
   "author": "",
@@ -28,4 +28,3 @@
     "supertest": "^7.1.4"
   }
 }
-

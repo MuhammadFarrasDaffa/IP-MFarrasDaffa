@@ -19,13 +19,22 @@ module.exports = {
         type: Sequelize.TEXT
       },
       rating: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(2, 1)
       },
       imageUrl: {
         type: Sequelize.STRING
       },
       status: {
         type: Sequelize.STRING
+      },
+      genres: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
+      duration: {
+        type: Sequelize.INTEGER
+      },
+      price: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
