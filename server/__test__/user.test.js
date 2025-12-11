@@ -23,10 +23,6 @@ jest.mock("../helpers/jwt", () => ({
     signToken: jest.fn(() => "test_token_123"),
 }));
 
-jest.mock("../helpers/bcrypt", () => ({
-    hashPassword: jest.fn(() => "hashed"),
-    compareHash: jest.fn(() => true),
-}));
 
 jest.mock("google-auth-library");
 
@@ -44,6 +40,11 @@ jest.mock("../middleware/authorization_watchlist", () => (req, res, next) => nex
 
 const buildApp = () => {
     jest.resetModules();
+    // Inject bcrypt mock per build so compareHash can vary per-test
+    jest.doMock("../helpers/bcrypt", () => ({
+        hashPassword: jest.fn(() => "hashed"),
+        compareHash: jest.fn(() => true),
+    }));
     const express = require("express");
     const app = express();
     app.use(express.json());
@@ -51,7 +52,6 @@ const buildApp = () => {
     return app;
 };
 
-const { compareHash } = require("../helpers/bcrypt");
 
 describe("User Routes", () => {
     beforeEach(() => {
@@ -91,7 +91,6 @@ describe("User Routes", () => {
                 email: "test@test.com",
                 password: "hashed",
             });
-            compareHash.mockReturnValueOnce(true);
 
             const app = buildApp();
             const res = await request(app)
@@ -137,9 +136,16 @@ describe("User Routes", () => {
                 email: "test@test.com",
                 password: "hashed",
             });
-            compareHash.mockReturnValueOnce(false);
-
-            const app = buildApp();
+            // Rebuild app with compareHash returning false
+            jest.resetModules();
+            jest.doMock("../helpers/bcrypt", () => ({
+                hashPassword: jest.fn(() => "hashed"),
+                compareHash: jest.fn(() => false),
+            }));
+            const express = require("express");
+            const app = express();
+            app.use(express.json());
+            app.use(require("../routes"));
             const res = await request(app)
                 .post("/login")
                 .send({ email: "test@test.com", password: "wrong" });
