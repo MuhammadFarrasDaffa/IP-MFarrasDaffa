@@ -27,24 +27,6 @@ module.exports = {
         onDelete: "cascade",
         onUpdate: "cascade"
       },
-      title: {
-        type: Sequelize.STRING
-      },
-      imageUrl: {
-        type: Sequelize.STRING
-      },
-      rating: {
-        type: Sequelize.DECIMAL(2, 1)
-      },
-      status: {
-        type: Sequelize.STRING
-      },
-      genres: {
-        type: Sequelize.ARRAY(Sequelize.STRING)
-      },
-      duration: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

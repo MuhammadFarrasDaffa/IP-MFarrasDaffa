@@ -18,12 +18,6 @@ module.exports = (sequelize, DataTypes) => {
   Watchlist.init({
     UserId: DataTypes.INTEGER,
     MovieId: DataTypes.INTEGER,
-    title: DataTypes.STRING,
-    imageUrl: DataTypes.STRING,
-    rating: DataTypes.DECIMAL(2, 1),
-    status: DataTypes.STRING,
-    genres: DataTypes.ARRAY(DataTypes.STRING),
-    duration: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Watchlist',

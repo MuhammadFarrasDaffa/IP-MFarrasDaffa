@@ -3,7 +3,7 @@ const { Profile } = require("../models");
 module.exports = class Controller {
     static async getProfiles(req, res, next) {
         try {
-            const { id } = req.params;
+            const id = req.user.id;
             const profile = await Profile.findOne({ where: { UserId: id } });
             if (!profile) {
                 throw { name: "Not Found", message: "Profile not found" };
@@ -18,13 +18,13 @@ module.exports = class Controller {
     static async updateProfile(req, res, next) {
         try {
             const { id } = req.params;
-            const { username, age, preferences } = req.body;
+            const { username, age, preferences, imageUrl } = req.body;
             const profile = await Profile.findOne({ where: { UserId: id } });
             if (!profile) {
                 throw { name: "Not Found", message: "Profile not found" };
             }
             await Profile.update(
-                { username, age, preferences },
+                { username, age, preferences, imageUrl },
                 { where: { UserId: id } }
             );
             res.status(200).json({ message: "Profile updated successfully" });

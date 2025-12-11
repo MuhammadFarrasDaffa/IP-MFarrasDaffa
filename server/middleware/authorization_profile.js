@@ -2,11 +2,11 @@ const { Profile } = require('../models')
 
 module.exports = async function authorization(req, res, next) {
     try {
-        const profileId = req.params.id
+        const profileId = req.user.id
         const profile = await Profile.findByPk(profileId)
 
         if (!profile) {
-            throw { name: "Not Found", message: "Transportation not found" }
+            throw { name: "Not Found", message: "User not found" }
         }
 
         if (profile.UserId !== req.user.id) {

@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Profile.init({
     username: DataTypes.STRING,
+    imageUrl: DataTypes.STRING,
     age: DataTypes.INTEGER,
     preferences: DataTypes.ARRAY(DataTypes.STRING),
     UserId: DataTypes.INTEGER
@@ -23,5 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Profile',
   });
+
+  Profile.beforeCreate((profile) => {
+    profile.imageUrl = "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80";
+  });
+
   return Profile;
 };

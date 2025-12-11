@@ -10,7 +10,7 @@ function randomPrice() {
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    const url_movies = `${process.env.TMDB_BASE_URL}/movie/upcoming`;
+    const url_movies = `${process.env.TMDB_BASE_URL}/movie/now_playing?page=2`;
     const options_movies = {
       method: 'GET',
       headers: {
@@ -58,7 +58,8 @@ module.exports = {
         genres: genresArray,
         duration: detail.runtime,
         imageUrl: `${process.env.TMDB_IMAGE_URL}${movie.poster_path}`,
-        status: "Upcoming Soon",
+        status: detail.status,
+        releaseDate: movie.release_date,
         createdAt: new Date(),
         updatedAt: new Date()
       }

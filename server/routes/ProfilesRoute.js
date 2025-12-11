@@ -7,7 +7,7 @@ const authorization = require("../middleware/authorization_profile");
 
 router.use(authentication)
 
-router.get("/:id", authorization, profileController.getProfiles);
+router.get("/", authorization, profileController.getProfiles);
 router.put("/:id", authorization, profileController.updateProfile);
 
 module.exports = router;

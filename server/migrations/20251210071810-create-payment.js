@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      OrderId: {
+        type: Sequelize.STRING
+      },
       UserId: {
         type: Sequelize.INTEGER,
         references: {
@@ -27,17 +30,14 @@ module.exports = {
         onDelete: "cascade",
         onUpdate: "cascade"
       },
-      paymentStatus: {
+      status: {
         type: Sequelize.STRING
       },
-      paymentMethod: {
-        type: Sequelize.STRING
+      amount: {
+        type: Sequelize.INTEGER
       },
-      paymentDate: {
-        type: Sequelize.DATE
-      },
-      paymentTime: {
-        type: Sequelize.TIME
+      transactionDetails: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

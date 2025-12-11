@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Movie.hasMany(models.Watchlist, { foreignKey: 'MovieId' });
-      Movie.hasMany(models.Payment, { foreignKey: 'MovieId' });
+      Movie.hasOne(models.Watchlist, { foreignKey: 'MovieId' });
+      Movie.hasOne(models.Payment, { foreignKey: 'MovieId' });
+      Movie.hasOne(models.Collection, { foreignKey: 'MovieId' });
     }
   }
   Movie.init({
@@ -21,7 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     rating: DataTypes.DECIMAL(2, 1),
     imageUrl: DataTypes.STRING,
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    genres: DataTypes.ARRAY(DataTypes.STRING),
+    duration: DataTypes.INTEGER,
+    price: DataTypes.INTEGER,
+    releaseDate: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Movie',

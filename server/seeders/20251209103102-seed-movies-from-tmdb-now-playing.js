@@ -10,7 +10,7 @@ function randomPrice() {
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    const url_movies = `${process.env.TMDB_BASE_URL}/movie/now_playing`;
+    const url_movies = `${process.env.TMDB_BASE_URL}/movie/now_playing?page=1`;
     const options_movies = {
       method: 'GET',
       headers: {
@@ -50,14 +50,15 @@ module.exports = {
       const genresArray = detail.genres ? detail.genres.map(genre => genre.name) : [];
       return {
         tmdbId: movie.id,
-        title: movie.original_title,
+        title: detail.title,
         description: movie.overview,
         rating: movie.vote_average,
         price: randomPrice(),
         genres: genresArray,
         duration: detail.runtime,
         imageUrl: `${process.env.TMDB_IMAGE_URL}${movie.poster_path}`,
-        status: "Available",
+        status: detail.status,
+        releaseDate: movie.release_date,
         createdAt: new Date(),
         updatedAt: new Date()
       }

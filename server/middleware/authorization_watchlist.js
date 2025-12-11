@@ -2,11 +2,11 @@ const { Watchlist } = require('../models')
 
 module.exports = async function authorization(req, res, next) {
     try {
-        const watchlistId = req.params.id
+        const watchlistId = req.user.id
         const watchlist = await Watchlist.findByPk(watchlistId)
 
         if (!watchlist) {
-            throw { name: "Not Found", message: "Transportation not found" }
+            throw { name: "Not Found", message: "Movies not found" }
         }
 
         if (watchlist.UserId !== req.user.id) {

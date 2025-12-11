@@ -4,7 +4,10 @@ module.exports = class Controller {
     static async getWatchlists(req, res, next) {
         try {
             const userId = req.user.id;
-            const watchlists = await Watchlist.findAll({ where: { UserId: userId } });
+            const watchlists = await Watchlist.findAll({
+                include: Movie,
+                where: { UserId: userId }
+            });
 
             if (!watchlists) {
                 throw { name: "Not Found", message: "No watchlists found for this user" };
@@ -36,12 +39,6 @@ module.exports = class Controller {
             const newWatchlist = await Watchlist.create({
                 UserId: userId,
                 MovieId: movieId,
-                title: movieData.title,
-                imageUrl: movieData.imageUrl,
-                rating: movieData.rating,
-                status: movieData.status,
-                genres: [""],
-                duration: 0
             });
 
             res.status(201).json({ message: "Movie added to watchlist", watchlist: newWatchlist });
@@ -50,6 +47,22 @@ module.exports = class Controller {
             next(error);
         }
 
+    }
+
+    static async checkWatchlist(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const movieId = req.params.id;
+            const watchlist = await Watchlist.findOne({ where: { UserId: userId, MovieId: movieId } });
+            if (watchlist) {
+                res.status(200).json({ isWatchlist: true });
+            } else {
+                res.status(200).json({ isWatchlist: false });
+            }
+        } catch (error) {
+            console.log("🚀 ~ checkWatchlist ~ error:", error);
+            next(error);
+        }
     }
 
     static async removeWatchlist(req, res, next) {
