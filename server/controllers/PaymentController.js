@@ -105,6 +105,10 @@ module.exports = class Controller {
                 { where: { OrderId: orderId } }
             );
 
+            if (paymentStatus !== "settlement" || paymentStatus !== "capture") {
+                await Collection.destroy({ where: { OrderId: orderId } });
+            }
+
             res.status(200).json({ status: "OK", orderId, paymentStatus });
         } catch (err) {
             console.log("🚀 ~ handleNotification ~ err:", err);
