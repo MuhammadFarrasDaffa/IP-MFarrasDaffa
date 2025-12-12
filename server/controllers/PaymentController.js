@@ -64,11 +64,6 @@ module.exports = class Controller {
                 transactionDetails: JSON.stringify(transaction),
             });
 
-            await Collection.create({
-                UserId: req.user.id,
-                MovieId: movieId,
-            });
-
             res.status(201).json({
                 snapToken: transaction.token,
                 redirectUrl: transaction.redirect_url,
@@ -100,13 +95,28 @@ module.exports = class Controller {
             console.log("[Midtrans Webhook]", { orderId, paymentStatus });
 
             // Update status pembayaran berdasarkan webhook Midtrans
-            await Payment.update(
+            const [_, [payment]] = await Payment.update(
                 { status: paymentStatus },
-                { where: { OrderId: orderId } }
+                { where: { OrderId: orderId }, returning: true }
             );
 
-            if (paymentStatus !== "settlement" || paymentStatus !== "capture") {
-                await Collection.destroy({ where: { OrderId: orderId } });
+            // If payment not found, nothing to do
+            if (!payment) {
+                return res.status(404).json({ message: "Payment not found" });
+            }
+
+            // Only create collection when payment is successful
+            if (paymentStatus === "capture") {
+                const exists = await Collection.findOne({
+                    where: { UserId: payment.UserId, MovieId: payment.MovieId },
+                });
+
+                if (!exists) {
+                    await Collection.create({
+                        UserId: payment.UserId,
+                        MovieId: payment.MovieId,
+                    });
+                }
             }
 
             res.status(200).json({ status: "OK", orderId, paymentStatus });
